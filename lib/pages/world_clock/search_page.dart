@@ -24,7 +24,7 @@ class _SearchPageState extends State<SearchPage> {
 
   void loadTimezones() async {
     String data = await DefaultAssetBundle.of(context).loadString(
-        "pages/world_clock/assets/timezones.json");
+        "lib/pages/world_clock/assets/timezones.json");
     setState(() {
       mainDataList = json.decode(data);
       newDataList = List.from(mainDataList);
