@@ -2,20 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-class AnimatedClockPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Animated Clock",
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: Animation(title: 'An animated clock'),
-    );
-  }
-}
-
 class ClockColumn extends StatefulWidget {
   final int initDigit;
   final double height;
@@ -76,9 +62,9 @@ class _ClockColumnState extends State<ClockColumn> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        border: Border.all(),
-      ),
+//      decoration: BoxDecoration(
+//        border: Border.all(),
+//      ),
       width: widget.width,
       height: widget.height,
       child: Stack(
@@ -103,15 +89,15 @@ class _ClockColumnState extends State<ClockColumn> with SingleTickerProviderStat
   }
 }
 
-class Animation extends StatefulWidget {
+class AnimatedClockPage extends StatefulWidget {
   final String title;
 
-  Animation({Key key, this.title}) : super(key: key);
+  AnimatedClockPage({Key key, this.title:"Aninated Clock"}) : super(key: key);
   @override
-  _AnimationState createState() => _AnimationState();
+  _AnimatedClockPageState createState() => _AnimatedClockPageState();
 }
 
-class _AnimationState extends State<Animation> {
+class _AnimatedClockPageState extends State<AnimatedClockPage> {
   GlobalKey<_ClockColumnState> keySecondFirstDigit = GlobalKey();
   GlobalKey<_ClockColumnState> keySecondLastDigit = GlobalKey();
   Timer timer;
