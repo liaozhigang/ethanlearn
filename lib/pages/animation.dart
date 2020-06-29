@@ -6,8 +6,9 @@ class ClockColumn extends StatefulWidget {
   final int initDigit;
   final double height;
   final double width;
+  final double fontSize;
 
-  const ClockColumn({Key key, this.initDigit, this.height: 60, this.width: 20}) : super(key: key);
+  const ClockColumn({Key key, this.initDigit, this.height: 60, this.width: 20, this.fontSize: 20}) : super(key: key);
 
   @override
   _ClockColumnState createState() => _ClockColumnState();
@@ -21,6 +22,7 @@ class _ClockColumnState extends State<ClockColumn> with SingleTickerProviderStat
   int oldDigit;
 
   AnimationController controller;
+  Animation<double> animation;
 
   @override
   void initState() {
@@ -31,15 +33,16 @@ class _ClockColumnState extends State<ClockColumn> with SingleTickerProviderStat
     oldDigit = -1;
 
     controller = new AnimationController(
-        duration: const Duration(milliseconds: 500), vsync: this)
-      ..addListener(() {
-        setState(() {
-          opacity = controller.value;
-          offset = 1.0 - controller.value;
-        });
-      });
+        duration: const Duration(milliseconds: 400), vsync: this);
 
-      controller.forward();
+    animation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: controller, curve: Curves.easeOutCubic))..addListener(() {
+      setState(() {
+        opacity = controller.value;
+        offset = 1.0 - controller.value;
+      });
+    });
+
+    controller.forward();
   }
 
   void setDigit(int d) {
@@ -73,14 +76,14 @@ class _ClockColumnState extends State<ClockColumn> with SingleTickerProviderStat
             opacity: opacity,
             child: Align(
               alignment: Alignment(0.0, offset),
-              child: Text(curDigit.toString()),
+              child: Text(curDigit.toString(), style: TextStyle(fontSize: widget.fontSize * animation.value)),
             ),
           ),
           Opacity(
             opacity: 1.0 - opacity,
             child: Align(
               alignment: Alignment(0.0, offset - 1.0),
-              child: Text(oldDigit >= 0 ? oldDigit.toString() : ""),
+              child: Text(oldDigit >= 0 ? oldDigit.toString() : "", style: TextStyle(fontSize: (1.0 + animation.value - 2*controller.value)* widget.fontSize),),
             ),
           ),
         ],
@@ -128,8 +131,8 @@ class _AnimatedClockPageState extends State<AnimatedClockPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ClockColumn(key: keySecondFirstDigit, initDigit: DateTime.now().second ~/ 10,),
-            ClockColumn(key: keySecondLastDigit, initDigit: DateTime.now().second % 10,),
+            ClockColumn(key: keySecondFirstDigit, width: 30, height: 90, fontSize: 40, initDigit: DateTime.now().second ~/ 10,),
+            ClockColumn(key: keySecondLastDigit, width: 30, height: 90, fontSize: 40, initDigit: DateTime.now().second % 10,),
           ],
         ),
       ),
