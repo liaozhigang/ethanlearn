@@ -59,12 +59,12 @@ class GetTime{
 
   List<String> curTime;
 
-  getTime(){
+  List<String> getTime(){
     DateTime now = DateTime.now();
     String hhmm = DateFormat('Hm').format(now).replaceAll(':', '');
 
-    List<String> curTime = hhmm.split('').map((e) => int.parse(e).toString()).toList();
-
+    curTime = hhmm.split('').map((e) => int.parse(e).toString()).toList();
+    return curTime;
   }
 
 }
