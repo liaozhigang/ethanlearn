@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learning/pages/animation.dart';
 import 'package:flutter_learning/pages/binary_clock.dart';
 import 'package:flutter_learning/pages/drag_and_drop.dart';
-import 'package:flutter_learning/pages/language.dart';
+import 'file:///C:/Users/Yusen/ethanlearn/lib/pages/lang/language.dart';
 import 'package:flutter_learning/pages/world_clock/world_clock_main.dart';
 
 import 'pages/hello_world.dart';
@@ -60,7 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
           testPage('World Clock', 'World time clock app', WorldClockPage()),
           testPage("Binary Clock", 'A binary digital clock', BinaryClockPage()),
           testPage('Drag and Drop', "A drag and drop application", DragAndDropPage()),
-          testPage("Language Testing Page", 'A testing page that translates languages', LanguagePage())
+          testPage("Language Testing Page", 'A testing page that translates languages', LanguagePage()),
+          testPage("Animated Clock", "an animated clock", AnimatedClockPage()),
         ],
       ),
     );
