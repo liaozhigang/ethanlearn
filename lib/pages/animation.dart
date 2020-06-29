@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-
 
 class AnimatedClockPage extends StatelessWidget {
   @override
@@ -18,6 +16,93 @@ class AnimatedClockPage extends StatelessWidget {
   }
 }
 
+class ClockColumn extends StatefulWidget {
+  final int initDigit;
+  final double height;
+  final double width;
+
+  const ClockColumn({Key key, this.initDigit, this.height: 60, this.width: 20}) : super(key: key);
+
+  @override
+  _ClockColumnState createState() => _ClockColumnState();
+}
+
+class _ClockColumnState extends State<ClockColumn> with SingleTickerProviderStateMixin {
+  double opacity;
+  double offset;
+
+  int curDigit;
+  int oldDigit;
+
+  AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    opacity = 0.0;
+    offset = 1.0;
+    curDigit = widget.initDigit;
+    oldDigit = -1;
+
+    controller = new AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this)
+      ..addListener(() {
+        setState(() {
+          opacity = controller.value;
+          offset = 1.0 - controller.value;
+        });
+      });
+
+      controller.forward();
+  }
+
+  void setDigit(int d) {
+    if (d == curDigit) {
+      return;
+    }
+
+    oldDigit = curDigit;
+    curDigit = d;
+    controller.reset();
+    controller.forward();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(),
+      ),
+      width: widget.width,
+      height: widget.height,
+      child: Stack(
+        children: [
+          Opacity(
+            opacity: opacity,
+            child: Align(
+              alignment: Alignment(0.0, offset),
+              child: Text(curDigit.toString()),
+            ),
+          ),
+          Opacity(
+            opacity: 1.0 - opacity,
+            child: Align(
+              alignment: Alignment(0.0, offset - 1.0),
+              child: Text(oldDigit >= 0 ? oldDigit.toString() : ""),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class Animation extends StatefulWidget {
   final String title;
 
@@ -27,18 +112,25 @@ class Animation extends StatefulWidget {
 }
 
 class _AnimationState extends State<Animation> {
-  GetTime _now = GetTime();
+  GlobalKey<_ClockColumnState> keySecondFirstDigit = GlobalKey();
+  GlobalKey<_ClockColumnState> keySecondLastDigit = GlobalKey();
+  Timer timer;
 
   @override
   void initState() {
-    Timer.periodic(Duration(minutes: 1), (timer) {
-      setState(() {
-        _now = GetTime();
-      });
-    });
     super.initState();
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      int second = DateTime.now().second;
+      keySecondFirstDigit.currentState.setDigit(second ~/ 10);
+      keySecondLastDigit.currentState.setDigit(second % 10);
+    });
   }
 
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,38 +138,15 @@ class _AnimationState extends State<Animation> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Container(
-          child:
-            Text(_now.curTime[0].toString()),
+      body: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ClockColumn(key: keySecondFirstDigit, initDigit: DateTime.now().second ~/ 10,),
+            ClockColumn(key: keySecondLastDigit, initDigit: DateTime.now().second % 10,),
+          ],
+        ),
       ),
     );
   }
 }
-
-
-class GetTime{
-
-  List<String> curTime;
-
-  List<String> getTime(){
-    DateTime now = DateTime.now();
-    String hhmm = DateFormat('Hm').format(now).replaceAll(':', '');
-
-    curTime = hhmm.split('').map((e) => int.parse(e).toString()).toList();
-    return curTime;
-  }
-
-}
-
-class ClockColumn extends StatelessWidget {
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: null
-    );
-  }
-}
-
