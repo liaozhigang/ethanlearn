@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_learning/pages/animation.dart';
 import 'package:flutter_learning/pages/binary_clock.dart';
 import 'package:flutter_learning/pages/drag_and_drop.dart';
-import 'file:///C:/Users/Yusen/ethanlearn/lib/pages/lang/language.dart';
 import 'package:flutter_learning/pages/world_clock/world_clock_main.dart';
 
 import 'pages/hello_world.dart';
+import 'pages/lang/language.dart';
 
 void main() {
   runApp(MyApp());
