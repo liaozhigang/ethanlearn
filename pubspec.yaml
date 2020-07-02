@@ -58,7 +58,9 @@ flutter:
     - lib/pages/world_clock/assets/timezones.json
     - lib/pages/lang/assets/en.json
     - lib/pages/lang/assets/zh.json
-
+    - lib/pages/world_clock/assets/day.png
+    - lib/pages/world_clock/assets/night.png
+    -
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
