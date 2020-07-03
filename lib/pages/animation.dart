@@ -56,6 +56,7 @@ class _ClockColumnState extends State<ClockColumn> with SingleTickerProviderStat
     controller.forward();
   }
 
+
   @override
   void dispose() {
     controller.dispose();
@@ -103,6 +104,11 @@ class AnimatedClockPage extends StatefulWidget {
 class _AnimatedClockPageState extends State<AnimatedClockPage> {
   GlobalKey<_ClockColumnState> keySecondFirstDigit = GlobalKey();
   GlobalKey<_ClockColumnState> keySecondLastDigit = GlobalKey();
+  GlobalKey<_ClockColumnState> keyMinuteFirstDigit = GlobalKey();
+  GlobalKey<_ClockColumnState> keyMinuteLastDigit = GlobalKey();
+  GlobalKey<_ClockColumnState> keyHourFirstDigit = GlobalKey();
+  GlobalKey<_ClockColumnState> keyHourLastDigit = GlobalKey();
+
   Timer timer;
 
   @override
@@ -110,8 +116,16 @@ class _AnimatedClockPageState extends State<AnimatedClockPage> {
     super.initState();
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       int second = DateTime.now().second;
+      int minute = DateTime.now().minute;
+      int hour = DateTime.now().hour;
+
       keySecondFirstDigit.currentState.setDigit(second ~/ 10);
       keySecondLastDigit.currentState.setDigit(second % 10);
+      keyMinuteFirstDigit.currentState.setDigit(minute ~/ 10);
+      keyMinuteLastDigit.currentState.setDigit(minute % 10);
+      keyHourFirstDigit.currentState.setDigit(hour ~/ 10);
+      keyHourLastDigit.currentState.setDigit(hour % 10);
+
     });
   }
 
@@ -131,6 +145,12 @@ class _AnimatedClockPageState extends State<AnimatedClockPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            ClockColumn(key: keyHourFirstDigit, width: 30, height: 90, fontSize: 40, initDigit: DateTime.now().hour ~/ 10,),
+            ClockColumn(key: keyHourLastDigit, width: 30, height: 90, fontSize: 40, initDigit: DateTime.now().hour % 10,),
+            Text(':', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+            ClockColumn(key: keyMinuteFirstDigit, width: 30, height: 90, fontSize: 40, initDigit: DateTime.now().minute ~/ 10,),
+            ClockColumn(key: keyMinuteLastDigit, width: 30, height: 90, fontSize: 40, initDigit: DateTime.now().minute % 10,),
+            Text(':', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
             ClockColumn(key: keySecondFirstDigit, width: 30, height: 90, fontSize: 40, initDigit: DateTime.now().second ~/ 10,),
             ClockColumn(key: keySecondLastDigit, width: 30, height: 90, fontSize: 40, initDigit: DateTime.now().second % 10,),
           ],

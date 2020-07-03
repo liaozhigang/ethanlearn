@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:flutter_learning/pages/world_clock_expanded_page.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +127,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,6 +143,18 @@ class _MyHomePageState extends State<MyHomePage> {
             actionPane: SlidableDrawerActionPane(),
             secondaryActions: <Widget>[
               IconSlideAction(
+                caption: 'Expand',
+                color: Colors.green,
+                icon: Icons.input,
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                    return WorldClockExpandedPage();
+                  }));
+                  ExpandedCityInfo.englishName = _locations[index].englishName.split('/').last;
+                  ExpandedCityInfo.utcOffset = _locations[index].utcOffset;
+                },
+              ),
+              IconSlideAction(
                 caption: 'Delete',
                 color: Colors.red,
                 icon: Icons.delete,
@@ -154,6 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
             ],
+
             child: Card(
                 margin: EdgeInsets.only(top: 1.0),
                 child: LocationClock(location: _locations[index].englishName, utcOffset: _locations[index].utcOffset,)),

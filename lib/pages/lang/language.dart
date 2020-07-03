@@ -14,7 +14,7 @@ class LanguagePage extends StatelessWidget {
       ),
       supportedLocales: [
         const Locale('en', 'US'),
-        const Locale('zh', ''),
+        const Locale.fromSubtags(languageCode: 'zh'),
       ],
       localizationsDelegates: [
         AppLocalizations.delegate,
@@ -23,7 +23,7 @@ class LanguagePage extends StatelessWidget {
       ],
       localeResolutionCallback: (locale, supportedLocales){
         for(var supportedLocale in supportedLocales){
-          if(supportedLocale.languageCode == locale.languageCode && supportedLocale.countryCode == locale.countryCode){
+          if(supportedLocale.languageCode == locale.languageCode){
             return supportedLocale;
           } else{return supportedLocales.first;}
         }
@@ -44,6 +44,7 @@ class LanguageHomePage extends StatefulWidget {
 }
 
 class _LanguageHomePageState extends State<LanguageHomePage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

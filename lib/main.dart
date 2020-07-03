@@ -3,7 +3,7 @@ import 'package:flutter_learning/pages/animation.dart';
 import 'package:flutter_learning/pages/binary_clock.dart';
 import 'package:flutter_learning/pages/drag_and_drop.dart';
 import 'package:flutter_learning/pages/world_clock/world_clock_main.dart';
-
+import 'package:flutter_learning/pages/world_clock_expanded_page.dart';
 import 'pages/hello_world.dart';
 import 'pages/lang/language.dart';
 
@@ -63,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
           testPage('Drag and Drop', "A drag and drop application", DragAndDropPage()),
           testPage("Language Testing Page", 'A testing page that translates languages', LanguagePage()),
           testPage("Animated Clock", "an animated clock", AnimatedClockPage()),
+          testPage("World Clock Expanded Page", 'an expanded page for world clock', WorldClockExpandedPage()),
         ],
       ),
     );

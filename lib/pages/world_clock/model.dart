@@ -16,3 +16,10 @@ class Location {
     'utcOffset': utcOffset,
   };
 }
+
+
+class ExpandedCityInfo{
+  static String englishName;
+  static String chineseName;
+  static int utcOffset;
+}
