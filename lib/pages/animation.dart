@@ -109,11 +109,9 @@ class _AnimatedClockPageState extends State<AnimatedClockPage> {
   GlobalKey<_ClockColumnState> keyHourFirstDigit = GlobalKey();
   GlobalKey<_ClockColumnState> keyHourLastDigit = GlobalKey();
   Timer timer;
-  DateTime cityTime;
 
-  void updateCityTime(){
-    cityTime = DateTime.now().toUtc().add(Duration(hours: ExpandedCityInfo.utcOffset));
-  }
+  var cityName = ExpandedCityInfo.englishName ??  "Local";
+  DateTime cityTime = DateTime.now().toUtc().add(Duration(hours: ExpandedCityInfo.utcOffset ?? 0));
 
   bool get dayOrNight {
     return cityTime.hour > 7 && cityTime.hour < 20;
@@ -122,7 +120,6 @@ class _AnimatedClockPageState extends State<AnimatedClockPage> {
   @override
   void initState() {
     super.initState();
-    updateCityTime();
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       int second = DateTime.now().second;
       int minute = DateTime.now().minute;
@@ -160,7 +157,7 @@ class _AnimatedClockPageState extends State<AnimatedClockPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(ExpandedCityInfo.englishName.toString(), style: TextStyle(fontSize: 30,),),
+              Text(cityName, style: TextStyle(fontSize: 30,),),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
