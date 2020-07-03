@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:flutter_learning/pages/animation.dart';
 import 'package:flutter_learning/pages/world_clock_expanded_page.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/cupertino.dart';
@@ -148,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: Icons.input,
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                    return WorldClockExpandedPage();
+                    return AnimatedClockPage();
                   }));
                   ExpandedCityInfo.englishName = _locations[index].englishName.split('/').last;
                   ExpandedCityInfo.utcOffset = _locations[index].utcOffset;
