@@ -66,7 +66,9 @@ class _SearchPageState extends State<SearchPage> {
                   return ListTile(
                     title: Text(data.split('/').last),
                     subtitle: Text(data.split('/').first),
-                    onTap: () => Navigator.of(context).pop(data),
+                    onTap: (){
+                      Navigator.of(context).pop(data);
+                    },
                   );
                 }).toList(),
               ),

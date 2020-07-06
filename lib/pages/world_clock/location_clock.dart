@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_learning/pages/animation.dart';
 
 class LocationClock extends StatefulWidget {
   final int utcOffset;
@@ -63,7 +64,7 @@ class _LocationClockState extends State<LocationClock> {
         color: dayOrNight ? Colors.white: Colors.black87,
       ),
       child: ListTile(
-        title: Text(formatTime(curTime), style: TextStyle(fontSize: 24.0, color: dayOrNight ? Colors.black87: Colors.white70), ),
+        title: ClockAnimation(),
         subtitle: Text(displayLocation, style: TextStyle(color: dayOrNight ? Colors.black87: Colors.white70),),
       ),
     );

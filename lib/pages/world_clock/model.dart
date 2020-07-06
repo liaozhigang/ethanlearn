@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_learning/pages/animation.dart';
+import 'dart:async';
+
 class Location {
   final String englishName;
   final String chineseName;
@@ -23,3 +27,21 @@ class ExpandedCityInfo{
   static String chineseName;
   static int utcOffset;
 }
+
+
+
+
+class AnimatedClocks extends StatefulWidget {
+  Timer timer;
+
+  @override
+  _AnimatedClocksState createState() => _AnimatedClocksState();
+}
+
+class _AnimatedClocksState extends State<AnimatedClocks> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+

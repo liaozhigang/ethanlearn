@@ -178,3 +178,78 @@ class _AnimatedClockPageState extends State<AnimatedClockPage> {
     );
   }
 }
+
+class AnimatedClock extends AnimatedWidget {
+  AnimatedClock({Key key, Animation<double> animation}) : super(key : key, listenable: animation);
+
+  @override
+  Widget build(BuildContext context){
+    final Animation<double> animation = listenable;
+    return Container(
+
+    );
+  }
+}
+
+
+class ClockAnimation extends StatefulWidget {
+  @override
+  _ClockAnimationState createState() => _ClockAnimationState();
+}
+
+class _ClockAnimationState extends State<ClockAnimation> {
+  GlobalKey<_ClockColumnState> keySecondFirstDigit = GlobalKey();
+  GlobalKey<_ClockColumnState> keySecondLastDigit = GlobalKey();
+  GlobalKey<_ClockColumnState> keyMinuteFirstDigit = GlobalKey();
+  GlobalKey<_ClockColumnState> keyMinuteLastDigit = GlobalKey();
+  GlobalKey<_ClockColumnState> keyHourFirstDigit = GlobalKey();
+  GlobalKey<_ClockColumnState> keyHourLastDigit = GlobalKey();
+  Timer timer;
+
+
+  DateTime cityTime = DateTime.now();
+
+
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      int second = DateTime.now().second;
+      int minute = DateTime.now().minute;
+      int hour = cityTime.hour;
+      keySecondFirstDigit.currentState.setDigit(second ~/ 10);
+      keySecondLastDigit.currentState.setDigit(second % 10);
+      keyMinuteFirstDigit.currentState.setDigit(minute ~/ 10);
+      keyMinuteLastDigit.currentState.setDigit(minute % 10);
+      keyHourFirstDigit.currentState.setDigit(hour ~/ 10);
+      keyHourLastDigit.currentState.setDigit(hour % 10);
+
+    });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        children: [
+          ClockColumn(key: keyHourFirstDigit, width: 20, height: 60, fontSize: 25, initDigit: cityTime.hour ~/ 10,),
+          ClockColumn(key: keyHourLastDigit, width: 20, height: 60, fontSize: 25, initDigit: cityTime.hour % 10,),
+          Text(':', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+          ClockColumn(key: keyMinuteFirstDigit, width: 20, height: 60, fontSize: 25, initDigit: DateTime.now().minute ~/ 10,),
+          ClockColumn(key: keyMinuteLastDigit, width: 20, height: 60, fontSize: 25, initDigit: DateTime.now().minute % 10,),
+          Text(':', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+          ClockColumn(key: keySecondFirstDigit, width: 20, height: 60, fontSize: 25, initDigit: DateTime.now().second ~/ 10,),
+          ClockColumn(key: keySecondLastDigit, width: 20, height: 60, fontSize: 25, initDigit: DateTime.now().second % 10,),
+        ],
+      ),
+    );
+  }
+}
+
+
