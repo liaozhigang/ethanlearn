@@ -193,6 +193,10 @@ class AnimatedClock extends AnimatedWidget {
 
 
 class ClockAnimation extends StatefulWidget {
+  final int utcOffset;
+
+  ClockAnimation(this.utcOffset);
+
   @override
   _ClockAnimationState createState() => _ClockAnimationState();
 }
@@ -216,7 +220,7 @@ class _ClockAnimationState extends State<ClockAnimation> {
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       int second = DateTime.now().second;
       int minute = DateTime.now().minute;
-      int hour = cityTime.hour;
+      int hour = DateTime.now().hour + widget.utcOffset;
       keySecondFirstDigit.currentState.setDigit(second ~/ 10);
       keySecondLastDigit.currentState.setDigit(second % 10);
       keyMinuteFirstDigit.currentState.setDigit(minute ~/ 10);

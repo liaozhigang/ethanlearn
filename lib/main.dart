@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_learning/pages/animation.dart';
 import 'package:flutter_learning/pages/binary_clock.dart';
 import 'package:flutter_learning/pages/drag_and_drop.dart';
+import 'file:///C:/Users/Yusen/ethanlearn/lib/pages/weather_app/weather_main.dart';
 import 'package:flutter_learning/pages/world_clock/world_clock_main.dart';
 import 'package:flutter_learning/pages/world_clock_expanded_page.dart';
 import 'pages/hello_world.dart';
@@ -64,6 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
           testPage("Language Testing Page", 'A testing page that translates languages', LanguagePage()),
           testPage("Animated Clock", "an animated clock", AnimatedClockPage()),
           testPage("World Clock Expanded Page", 'an expanded page for world clock', WorldClockExpandedPage()),
+          testPage("Weather App", "An app that shows the weather", WeatherMain()),
+
         ],
       ),
     );

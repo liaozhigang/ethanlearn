@@ -16,6 +16,7 @@ class LocationClock extends StatefulWidget {
 class _LocationClockState extends State<LocationClock> {
   Timer _timer;
   DateTime curTime;
+  int displayTimeHour;
 
   String padTime(int time) {
     return time.toString().padLeft(2, "0");
@@ -43,6 +44,7 @@ class _LocationClockState extends State<LocationClock> {
 
   void updateCurTime() {
     curTime = DateTime.now().toUtc().add(Duration(hours: widget.utcOffset));
+    displayTimeHour = curTime.hour.toInt() - DateTime.now().hour.toInt();
   }
 
 
@@ -64,7 +66,7 @@ class _LocationClockState extends State<LocationClock> {
         color: dayOrNight ? Colors.white: Colors.black87,
       ),
       child: ListTile(
-        title: ClockAnimation(),
+        title: ClockAnimation(displayTimeHour),       //formatTime(curTime)
         subtitle: Text(displayLocation, style: TextStyle(color: dayOrNight ? Colors.black87: Colors.white70),),
       ),
     );
