@@ -37,7 +37,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
   void searchWoeid(String input) async {
     var searchResult = await http.get(getUrl + input);
-    var result = json.decode(searchResult.body[0]);
+    var result = json.decode(searchResult.body)[0];
 
     setState(() {
       location = result["title"];
@@ -55,6 +55,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     setState(() {
       temperature = data["the_temp"].round();
       weatherType = data['weather_state_name'].toString().split(' ').last.toLowerCase();
+
     });
   }
 
@@ -64,17 +65,13 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     searchLocation();
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('lib/pages/weather/assets/$weatherType.png'),      //$weatherType
+          image: AssetImage('lib/pages/weather/assets/cloud.png'),      //$weatherType
           fit: BoxFit.cover,
         )
       ),
