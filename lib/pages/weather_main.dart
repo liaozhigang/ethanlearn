@@ -31,6 +31,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   String location = "Chicago";
   String weatherType = 'Cloud';
   int woeid = 44418;    //woeid represented where on earth id
+  String abbreviation = '';
 
   String getUrl = "https://www.metaweather.com/api/location/search/?query=";
   String getLocationUrl = "https://www.metaweather.com/api/location/";
@@ -46,8 +47,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   }
 
   void searchLocation() async {
-    var searchResult = await http.get(getLocationUrl + woeid.toString());
-    var result = json.decode(searchResult.body);
+    var locationResult = await http.get(getLocationUrl + woeid.toString());
+    var result = json.decode(locationResult.body);
 
     var consolidatedWeather = result['consolidated_weather'];
     var data = consolidatedWeather[0];
@@ -55,7 +56,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     setState(() {
       temperature = data["the_temp"].round();
       weatherType = data['weather_state_name'].toString().split(' ').last.toLowerCase();
-
+      abbreviation = data['weather_state_abbr'];
     });
   }
 
@@ -83,6 +84,9 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
           children: <Widget>[
             Column(
               children: [
+                Center(
+                  child: Image.network('https://www.metaweather.com/static/img/weather/png/$abbreviation.png', width: 100,),
+                ),
                 Center(
                   child: Text(
                     temperature.toString() + " \u2103",    // \u2109 for Fahrenheit
