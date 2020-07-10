@@ -34,6 +34,7 @@ dependencies:
   analyzer: ^0.36.3
   json_annotation: ^3.0.1
   geolocation: ^1.1.2
+  rx_command: ^5.1.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -62,7 +63,10 @@ flutter:
     - lib/pages/lang/assets/zh.json
     - lib/pages/world_clock/assets/day.png
     - lib/pages/world_clock/assets/night.png
-    -
+    - lib/pages/weather/assets/cloud.png
+    - lib/pages/weather/assets/rain.png
+    - lib/pages/weather/assets/snow.png
+    - lib/pages/weather/assets/sunny.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

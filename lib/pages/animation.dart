@@ -179,18 +179,6 @@ class _AnimatedClockPageState extends State<AnimatedClockPage> {
   }
 }
 
-class AnimatedClock extends AnimatedWidget {
-  AnimatedClock({Key key, Animation<double> animation}) : super(key : key, listenable: animation);
-
-  @override
-  Widget build(BuildContext context){
-    final Animation<double> animation = listenable;
-    return Container(
-
-    );
-  }
-}
-
 
 class ClockAnimation extends StatefulWidget {
   final int utcOffset;
