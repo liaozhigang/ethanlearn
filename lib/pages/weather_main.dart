@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,7 +18,7 @@ class WeatherMain extends StatelessWidget {
       ),
       home: WeatherHomePage(),
     );
-  }
+  }     
 }
 
 class WeatherHomePage extends StatefulWidget {
@@ -27,23 +28,45 @@ class WeatherHomePage extends StatefulWidget {
 }
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
-  int temperature = 0;
+  int temperature;
   String location = "Chicago";
   String weatherType = 'Cloud';
   int woeid = 44418;    //woeid represented where on earth id
   String abbreviation = '';
+  String unrecognizedInput = '';
+
 
   String getUrl = "https://www.metaweather.com/api/location/search/?query=";
   String getLocationUrl = "https://www.metaweather.com/api/location/";
 
-  void searchWoeid(String input) async {
-    var searchResult = await http.get(getUrl + input);
-    var result = json.decode(searchResult.body)[0];
 
-    setState(() {
-      location = result["title"];
-      woeid = result['woeid'];
-    });
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+
+  Position _currentPosition;
+  String _currentAddress;
+
+  @override
+  void initState() {
+    super.initState();
+    searchLocation();
+  }
+
+  void searchWoeid(String input) async {
+    try{
+      var searchResult = await http.get(getUrl + input);
+      var result = json.decode(searchResult.body)[0];
+
+      setState(() {
+        location = result["title"];
+        woeid = result['woeid'];
+        unrecognizedInput = '';
+      });
+    }
+    catch(error){
+      setState(() {
+        unrecognizedInput = 'Sorry, no data for this city. Try another one';
+      });
+    }
   }
 
   void searchLocation() async {
@@ -61,9 +84,40 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   }
 
 
-  void onTextFieldSubmitted(String input){
-    searchWoeid(input);
-    searchLocation();
+  void onTextFieldSubmitted(String input) async {
+    await searchWoeid(input);
+    await searchLocation();
+  }
+
+
+  _getCurrentLocation() {                                           // geolocator
+    geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((Position position) {
+      setState(() {
+        _currentPosition = position;
+      });
+      _getAddressFromLatLng();
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  _getAddressFromLatLng() async {
+    try {
+      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+          _currentPosition.latitude, _currentPosition.longitude);
+
+      Placemark place = p[0];
+
+      setState(() {
+        _currentAddress =
+        "${place.locality}, ${place.postalCode}, ${place.country}";
+      });
+      onTextFieldSubmitted(place.locality);
+    } catch (e) {
+      print(e);
+    }
   }
 
 
@@ -76,7 +130,18 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
           fit: BoxFit.cover,
         )
       ),
-      child: Scaffold(
+      child: temperature == null ? Center(child: CircularProgressIndicator(),) : Scaffold(
+        appBar: AppBar(
+          actions:<Widget> [
+            GestureDetector(
+              onTap: (){
+                _getCurrentLocation();
+                },
+              child: Icon(Icons.my_location, size: 40,),
+            ),
+          ],
+          backgroundColor: Colors.transparent, elevation: 0.0,
+        ),
         backgroundColor: Colors.transparent,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -121,6 +186,11 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                       prefixIcon: Icon(Icons.search)
                     ),
                   ),
+                ),
+                Text(
+                  unrecognizedInput,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.red, fontSize: 15),
                 )
               ],
             ),
